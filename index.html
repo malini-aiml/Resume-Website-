@@ -163,12 +163,12 @@ p {
         <img id="profilePic" style="display:none;">
     </div>
 
-    <div class="section" id="secObjective">
+    <div class="section">
         <h3>CAREER OBJECTIVE</h3>
         <p id="resumeObjective"></p>
     </div>
 
-    <div class="section" id="secContact">
+    <div class="section">
         <h3>CONTACT</h3>
         <p id="resumePhone"></p>
         <p id="resumeEmail"></p>
@@ -176,32 +176,32 @@ p {
         <p id="resumeLinkedin"></p>
     </div>
 
-    <div class="section" id="secSkills">
+    <div class="section">
         <h3>SKILLS</h3>
         <ul id="resumeSkills"></ul>
     </div>
 
-    <div class="section" id="secEducation">
+    <div class="section">
         <h3>EDUCATION</h3>
         <p id="resumeEducation"></p>
     </div>
 
-    <div class="section" id="secCertifications">
+    <div class="section">
         <h3>CERTIFICATIONS</h3>
         <ul id="resumeCertifications"></ul>
     </div>
 
-    <div class="section" id="secLanguages">
+    <div class="section">
         <h3>LANGUAGES</h3>
         <ul id="resumeLanguages"></ul>
     </div>
 
-    <div class="section" id="secExperience">
+    <div class="section">
         <h3>EXPERIENCE</h3>
         <p id="resumeExperience"></p>
     </div>
 
-    <div class="section" id="secProjects">
+    <div class="section">
         <h3>PROJECTS / INTERNSHIPS</h3>
         <div id="resumeProjects"></div>
     </div>
@@ -251,7 +251,7 @@ function setList(inputId, targetId){
         });
 }
 
-/* PROJECTS (SAFE) */
+/* PROJECTS */
 function formatProjects(text){
     if(!text.trim()) return "";
 
@@ -285,8 +285,8 @@ document.getElementById("resumeForm").addEventListener("submit", function(e){
     setList("certifications", "resumeCertifications");
     setList("languages", "resumeLanguages");
 
-    const projects = document.getElementById("projects").value;
-    document.getElementById("resumeProjects").innerHTML = formatProjects(projects);
+    document.getElementById("resumeProjects").innerHTML =
+        formatProjects(document.getElementById("projects").value);
 
     document.getElementById("resumeForm").style.display = "none";
     document.getElementById("resume").style.display = "block";
