@@ -6,6 +6,8 @@
 <title>Resume Builder</title>
 
 <style>
+* { box-sizing: border-box; }
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -38,90 +40,91 @@ button {
     cursor: pointer;
 }
 
-/* RESUME A4 FIX */
+/* RESUME */
 .resume {
     width: 210mm;
     min-height: 297mm;
     margin: auto;
     background: white;
     padding: 15mm;
-    box-sizing: border-box;
     border: 3px solid #2c3e50;
     font-size: 13px;
     display: none;
 }
 
-/* HEADER */
 .header {
     background: #2c3e50;
     color: white;
-    text-align: center;
-    padding: 10px;
+    padding: 20px;
     position: relative;
+    min-height: 125px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header h1 {
+    margin: 0;
+    padding-right: 110px;
+    overflow-wrap: break-word;
 }
 
 .header img {
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: 20px;
+    top: 20px;
     width: 85px;
     height: 85px;
     border-radius: 50%;
+    object-fit: cover;
+    background: #ddd;
 }
 
-/* SECTIONS */
 .section {
-    margin-bottom: 8px;
-    break-inside: avoid;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .section h3 {
     border-bottom: 2px solid #333;
     padding-bottom: 3px;
-    margin-bottom: 5px;
+    color: #2c3e50;
 }
 
 ul {
     padding-left: 18px;
-    margin: 5px 0;
-    line-height: 1.4;
 }
 
-/* PROJECTS */
-#resumeProjects {
-    line-height: 1.4;
+p {
+    margin: 4px 0;
+    white-space: pre-line;
 }
 
-/* PRINT FIX (MOST IMPORTANT) */
+.download-btn {
+    margin: 20px auto 0;
+    display: block;
+}
+
+/* PRINT */
 @media print {
+    @page { size: A4; margin: 0; }
 
-    body {
+    html, body {
+        margin: 0;
+        padding: 0;
         background: white;
     }
 
-    form {
-        display: none;
+    form, .download-btn {
+        display: none !important;
     }
 
     .resume {
+        display: block !important;
         border: none;
         width: 210mm;
         height: 297mm;
-        padding: 15mm;
         overflow: hidden;
-    }
-
-    button {
-        display: none;
-    }
-
-    .section {
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
-
-    h3 {
-        break-after: avoid;
     }
 }
 </style>
@@ -130,171 +133,163 @@ ul {
 <body>
 
 <form id="resumeForm">
+    <h2>Resume Builder</h2>
 
-<h2>Resume Builder</h2>
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="file" id="profilePicInput" accept="image/*">
 
-<input type="text" id="name" placeholder="Full Name" required>
-<input type="file" id="profilePicInput">
+    <input type="text" id="phone" placeholder="Phone">
+    <input type="email" id="email" placeholder="Email">
+    <input type="text" id="location" placeholder="Location">
+    <input type="text" id="linkedin" placeholder="LinkedIn">
 
-<input type="text" id="phone" placeholder="Phone">
-<input type="email" id="email" placeholder="Email">
-<input type="text" id="location" placeholder="Location">
-<input type="text" id="linkedin" placeholder="LinkedIn">
+    <textarea id="objective" placeholder="Objective"></textarea>
 
-<textarea id="objective" placeholder="Objective"></textarea>
+    <input type="text" id="skills" placeholder="Skills (comma separated)">
+    <input type="text" id="certifications" placeholder="Certifications (comma separated)">
+    <input type="text" id="education" placeholder="Education">
+    <input type="text" id="languages" placeholder="Languages (comma separated)">
 
-<input type="text" id="skills" placeholder="Skills (comma separated)">
-<input type="text" id="certifications" placeholder="Certifications (comma separated)">
-<input type="text" id="education" placeholder="Education (single line)">
-<input type="text" id="languages" placeholder="Languages (comma separated)">
+    <textarea id="experience" placeholder="Experience"></textarea>
+    <textarea id="projects" placeholder="Projects / Internships"></textarea>
 
-<textarea id="experience" placeholder="Experience"></textarea>
-
-<textarea id="projects" placeholder="Projects / Internships"></textarea>
-
-<button type="submit">Generate Resume</button>
-
+    <button type="submit">Generate Resume</button>
 </form>
 
 <div class="resume" id="resume">
 
-<div class="header">
-    <h1 id="resumeName"></h1>
-    <img id="profilePic">
-</div>
+    <div class="header">
+        <h1 id="resumeName"></h1>
+        <img id="profilePic" style="display:none;">
+    </div>
 
-<div class="section">
-<h3>CAREER OBJECTIVE</h3>
-<p id="resumeObjective"></p>
-</div>
+    <div class="section" id="secObjective">
+        <h3>CAREER OBJECTIVE</h3>
+        <p id="resumeObjective"></p>
+    </div>
 
-<div class="section">
-<h3>CONTACT</h3>
-<p id="resumePhone"></p>
-<p id="resumeEmail"></p>
-<p id="resumeLocation"></p>
-<p id="resumeLinkedin"></p>
-</div>
+    <div class="section" id="secContact">
+        <h3>CONTACT</h3>
+        <p id="resumePhone"></p>
+        <p id="resumeEmail"></p>
+        <p id="resumeLocation"></p>
+        <p id="resumeLinkedin"></p>
+    </div>
 
-<div class="section">
-<h3>SKILLS</h3>
-<ul id="resumeSkills"></ul>
-</div>
+    <div class="section" id="secSkills">
+        <h3>SKILLS</h3>
+        <ul id="resumeSkills"></ul>
+    </div>
 
-<div class="section">
-<h3>EDUCATION</h3>
-<p id="resumeEducation"></p>
-</div>
+    <div class="section" id="secEducation">
+        <h3>EDUCATION</h3>
+        <p id="resumeEducation"></p>
+    </div>
 
-<div class="section">
-<h3>CERTIFICATIONS</h3>
-<ul id="resumeCertifications"></ul>
-</div>
+    <div class="section" id="secCertifications">
+        <h3>CERTIFICATIONS</h3>
+        <ul id="resumeCertifications"></ul>
+    </div>
 
-<div class="section">
-<h3>LANGUAGES</h3>
-<ul id="resumeLanguages"></ul>
-</div>
+    <div class="section" id="secLanguages">
+        <h3>LANGUAGES</h3>
+        <ul id="resumeLanguages"></ul>
+    </div>
 
-<div class="section">
-<h3>EXPERIENCE</h3>
-<p id="resumeExperience"></p>
-</div>
+    <div class="section" id="secExperience">
+        <h3>EXPERIENCE</h3>
+        <p id="resumeExperience"></p>
+    </div>
 
-<div class="section">
-<h3>PROJECTS / INTERNSHIPS</h3>
-<div id="resumeProjects"></div>
-</div>
+    <div class="section" id="secProjects">
+        <h3>PROJECTS / INTERNSHIPS</h3>
+        <div id="resumeProjects"></div>
+    </div>
 
-<button onclick="window.print()">Download PDF</button>
-
+    <button onclick="window.print()" class="download-btn">Download PDF</button>
 </div>
 
 <script>
 
 /* IMAGE */
 document.getElementById('profilePicInput').addEventListener('change', function(e){
-    const reader = new FileReader();
-    reader.onload = function(){
-        document.getElementById('profilePic').src = reader.result;
-    };
-    reader.readAsDataURL(e.target.files[0]);
+    const file = e.target.files[0];
+    const img = document.getElementById('profilePic');
+
+    if(file){
+        const reader = new FileReader();
+        reader.onload = () => {
+            img.src = reader.result;
+            img.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    } else {
+        img.src = "";
+        img.style.display = "none";
+    }
 });
 
-/* LISTS */
-function makeList(id, target){
-    const items = document.getElementById(id).value
-        .split(',')
-        .map(i => i.trim())
-        .filter(Boolean);
-
-    const ul = document.getElementById(target);
-    ul.innerHTML = "";
-
-    items.forEach(i => {
-        const li = document.createElement("li");
-        li.innerText = i;
-        ul.appendChild(li);
-    });
+/* TEXT FIELD */
+function setText(id, value, prefix=""){
+    const el = document.getElementById(id);
+    el.textContent = value ? prefix + value : "";
 }
 
-/* PROJECT FORMAT FIX */
+/* LIST */
+function setList(inputId, targetId){
+    const value = document.getElementById(inputId).value.trim();
+    const ul = document.getElementById(targetId);
+    ul.innerHTML = "";
+
+    if(!value) return;
+
+    value.split(",").map(x => x.trim()).filter(Boolean)
+        .forEach(item => {
+            const li = document.createElement("li");
+            li.textContent = item;
+            ul.appendChild(li);
+        });
+}
+
+/* PROJECTS (SAFE) */
 function formatProjects(text){
+    if(!text.trim()) return "";
 
-    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-
-    let output = "";
-
-    lines.forEach(line => {
-
-        if(!line.startsWith("-") && !line.startsWith("•")){
-            output += "<b>" + line + "</b><br>";
+    return text.split(/\n/).map(line => {
+        line = line.trim();
+        if(line.startsWith("-") || line.startsWith("•")){
+            return "• " + line.replace(/^[-•]\s*/, "");
         }
-        else{
-            output += "• " + line.replace(/^[-•]\s*/, "") + "<br>";
-        }
-    });
-
-    return output;
+        return "<b>" + line + "</b>";
+    }).join("<br>");
 }
 
 /* SUBMIT */
-document.getElementById('resumeForm').addEventListener('submit', function(e){
+document.getElementById("resumeForm").addEventListener("submit", function(e){
     e.preventDefault();
 
-    document.getElementById('resumeName').innerText =
-        document.getElementById('name').value;
+    setText("resumeName", document.getElementById("name").value);
+    setText("resumeObjective", document.getElementById("objective").value);
+    setText("resumePhone", document.getElementById("phone").value, "Phone: ");
+    setText("resumeEmail", document.getElementById("email").value, "Email: ");
+    setText("resumeLocation", document.getElementById("location").value, "Location: ");
 
-    document.getElementById('resumeObjective').innerText =
-        document.getElementById('objective').value;
+    const linkedin = document.getElementById("linkedin").value.trim();
+    document.getElementById("resumeLinkedin").innerHTML =
+        linkedin ? `LinkedIn: <a href="${linkedin}" target="_blank">${linkedin}</a>` : "";
 
-    document.getElementById('resumePhone').innerText =
-        "Phone: " + document.getElementById('phone').value;
+    setText("resumeEducation", document.getElementById("education").value);
+    setText("resumeExperience", document.getElementById("experience").value);
 
-    document.getElementById('resumeEmail').innerText =
-        "Email: " + document.getElementById('email').value;
+    setList("skills", "resumeSkills");
+    setList("certifications", "resumeCertifications");
+    setList("languages", "resumeLanguages");
 
-    document.getElementById('resumeLocation').innerText =
-        "Location: " + document.getElementById('location').value;
+    const projects = document.getElementById("projects").value;
+    document.getElementById("resumeProjects").innerHTML = formatProjects(projects);
 
-    document.getElementById('resumeLinkedin').innerText =
-        "LinkedIn: " + document.getElementById('linkedin').value;
-
-    document.getElementById('resumeExperience').innerText =
-        document.getElementById('experience').value;
-
-    makeList('skills','resumeSkills');
-    makeList('certifications','resumeCertifications');
-    makeList('languages','resumeLanguages');
-
-    document.getElementById('resumeEducation').innerText =
-        document.getElementById('education').value;
-
-    document.getElementById('resumeProjects').innerHTML =
-        formatProjects(document.getElementById('projects').value);
-
-    document.getElementById('resumeForm').style.display = "none";
-    document.getElementById('resume').style.display = "block";
+    document.getElementById("resumeForm").style.display = "none";
+    document.getElementById("resume").style.display = "block";
 });
 
 </script>
